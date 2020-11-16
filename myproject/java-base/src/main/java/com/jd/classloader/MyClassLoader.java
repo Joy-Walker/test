@@ -24,6 +24,7 @@ public class MyClassLoader extends ClassLoader {
             if (c == null) {
                 long t0 = System.nanoTime();
 
+                // JDK自身的加载仍满足双亲委派模型
                 if (!name.startsWith("com.jd")) {
 
                     c = getParent().loadClass(name);
@@ -33,7 +34,6 @@ public class MyClassLoader extends ClassLoader {
                     // to find the class.
                     long t1 = System.nanoTime();
                     c = findClass(name);
-                    // this is the defining class loader; record the stats
                     sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);
                     sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
                     sun.misc.PerfCounter.getFindClasses().increment();
